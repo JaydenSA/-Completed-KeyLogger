@@ -16,7 +16,7 @@ void clearFirefoxCache() {
 
     /* old method for pulling username
     strcat_s(path, std::getenv("LOGNAME"));
-    strcat_s(path, "\\jayden.oerson\\"); */ 
+    strcat_s(path, "\\username\\"); */ 
 
     // using Windows32API header to pull username 
     CHAR username[UNLEN + 1];
